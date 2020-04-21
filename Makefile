@@ -1,21 +1,16 @@
-DEBUG = 0
-DUMPDATA = 1
+DEBUG = 1
 
 CC = gcc
-EXEC = ms2fft
-COMMON = -I./libmseed/ -I.
+EXEC = ms2filter
+COMMON = -I./libmseed/ -Iinclude/ -Isrc/ -I/usr/local/include/liquid
 CFLAGS =  -Wall
 LDFLAGS = -L./libmseed -Wl,-rpath,./libmseed
-LDLIBS = -Wl,-Bstatic -lmseed -Wl,-Bdynamic -lm -lfftw3
+LDLIBS = -Wl,-Bstatic -lmseed -Wl,-Bdynamic -lm -lliquid
 
-OBJS = main.o standard_deviation.o fft.o
+OBJS = main.o src/parse_miniSEED.o src/bandpass_filter.o src/write2script.o
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -O0 -g -DDEBUG=1
-endif
-
-ifeq ($(DUMPDATA), 1)
-CFLAGS += -DDUMPDATA=1
 endif
 
 .PHONY: all clean

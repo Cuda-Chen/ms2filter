@@ -1,19 +1,21 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 
 #include "libmseed.h"
 
 #include "parse_miniSEED.h"
 
 int
-parse_miniSEED (const char *mseedfile, double *data, double *sampleRate, uint64_t *totalSamples)
+parse_miniSEED (const char *mseedfile, double **data, double *sampleRate, uint64_t *dataLength)
 {
   MS3TraceList *mstl = NULL;
-  MS3TraceId *tid    = NULL;
-  Ms3TraceSeg *seg   = NULL;
+  MS3TraceID *tid    = NULL;
+  MS3TraceSeg *seg   = NULL;
   uint32_t flags     = 0;
   int8_t verbose     = 0;
+  uint64_t totalSamples;
+  int rv;
 
   flags |= MSF_VALIDATECRC;
   /* Unpack the data */
@@ -32,7 +34,7 @@ parse_miniSEED (const char *mseedfile, double *data, double *sampleRate, uint64_
   while (tid)
   {
     /* Allocate the data array of every trace */
-    *totalSamples = 0;
+    totalSamples = 0;
     /* Count how many samples of this trace */
     seg = tid->first;
     while (seg)
@@ -47,8 +49,8 @@ parse_miniSEED (const char *mseedfile, double *data, double *sampleRate, uint64_
     /* Get the data of this trace */
     seg            = tid->first;
     uint64_t index = 0;
-    data           = (double *)malloc (sizeof (double) * totalSamples);
-    if (data == NULL)
+    *data          = (double *)malloc (sizeof (double) * totalSamples);
+    if (*data == NULL)
     {
       ms_log (2, "something wrong when mallocing data array\n");
       return -1;
@@ -92,15 +94,15 @@ parse_miniSEED (const char *mseedfile, double *data, double *sampleRate, uint64_
               sptr = (char *)seg->datasamples + (i * samplesize);
               if (sampletype == 'i')
               {
-                data[index] = (double)(*(int32_t *)sptr);
+                (*data)[index] = (double)(*(int32_t *)sptr);
               }
               else if (sampletype == 'f')
               {
-                data[index] = (double)(*(float *)sptr);
+                (*data)[index] = (double)(*(float *)sptr);
               }
               else if (sampletype == 'd')
               {
-                data[index] = (double)(*(double *)sptr);
+                (*data)[index] = (double)(*(double *)sptr);
               }
 
               index++;
@@ -117,8 +119,10 @@ parse_miniSEED (const char *mseedfile, double *data, double *sampleRate, uint64_
 
   if (mstl)
   {
-    mstl3_fre (&mstl, 0);
+    mstl3_free (&mstl, 0);
   }
+
+  *dataLength = totalSamples;
 
   return 0;
 }
