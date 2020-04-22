@@ -64,5 +64,53 @@ def run():
 
     plt.show()
 
+def mydata():
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.signal import freqz
+
+    x = np.loadtxt('dumpdata.txt')
+
+    # Sample rate and desired cutoff frequencies (in Hz).
+    fs = 100.0
+    lowcut = 1.0
+    highcut = 10.0
+
+    # Plot the frequency response for a few different orders.
+    plt.figure(1)
+    plt.clf()
+    for order in [2, 3, 6, 9]:
+        b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+        w, h = freqz(b, a, worN=2000)
+        plt.plot((fs * 0.5 / np.pi) * w, abs(h), label="order = %d" % order)
+
+    plt.plot([0, 0.5 * fs], [np.sqrt(0.5), np.sqrt(0.5)],
+             '--', label='sqrt(0.5)')
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Gain')
+    plt.grid(True)
+    plt.legend(loc='best')
+
+    # Filter a noisy signal.
+    nsamples = x.size
+    T = nsamples / fs
+    t = np.linspace(0, T, nsamples, endpoint=False)
+    a = 0.02
+    f0 = 10.0
+    plt.figure(2)
+    plt.clf()
+    plt.plot(t, x, label='Input signal')
+
+    y = butter_bandpass_filter(x, lowcut, highcut, fs, order=6)
+    plt.plot(t, y, label='Filtered signal (%g Hz)' % f0)
+    plt.xlabel('time (seconds)')
+    plt.hlines([-a, a], 0, T, linestyles='--')
+    plt.grid(True)
+    plt.axis('tight')
+    plt.legend(loc='upper left')
+
+    plt.show()
+
 if __name__ == '__main__':
-    run();
+    #run();
+    mydata()
