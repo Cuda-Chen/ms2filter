@@ -48,8 +48,8 @@ main (int argc, char **argv)
   }
 
   /* filter the data with band pass filter */
-  filterResult = (double complex *)malloc(sizeof(double complex) * totalSamples);
-  freqResponse = (double complex *)malloc(sizeof(double complex) * nfft);
+  filterResult = (double complex *)malloc (sizeof (double complex) * totalSamples);
+  freqResponse = (double complex *)malloc (sizeof (double complex) * nfft);
   bandpass_filter (data, sampleRate, totalSamples, nfft,
                    filterResult, freqResponse);
   if (filterResult == NULL || freqResponse == NULL)

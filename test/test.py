@@ -102,7 +102,7 @@ def mydata():
     plt.plot(t, x, label='Input signal')
 
     y = butter_bandpass_filter(x, lowcut, highcut, fs, order=6)
-    plt.plot(t, y, label='Filtered signal (%g Hz)' % f0)
+    plt.plot(t, y, label='Filtered signal')
     plt.xlabel('time (seconds)')
     plt.hlines([-a, a], 0, T, linestyles='--')
     plt.grid(True)
