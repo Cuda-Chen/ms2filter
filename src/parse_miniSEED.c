@@ -49,7 +49,7 @@ parse_miniSEED (const char *mseedfile, double **data, double *sampleRate, uint64
     /* Get the data of this trace */
     seg            = tid->first;
     uint64_t index = 0;
-    *data          = (double *)malloc (sizeof (double) * totalSamples);
+    (*data)          = (double *)malloc (sizeof (double) * totalSamples);
     if (*data == NULL)
     {
       ms_log (2, "something wrong when mallocing data array\n");

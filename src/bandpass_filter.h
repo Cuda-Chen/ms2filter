@@ -4,6 +4,7 @@
 #include <complex.h>
 #include <stdint.h>
 
-double complex *bandpass_filter (double *data, double sampleRate, uint64_t totalSamples);
+void bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, int nfft,
+                       double complex *filterResult, double complex *freqResponse);
 
 #endif

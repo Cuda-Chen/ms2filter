@@ -6,8 +6,9 @@
 
 #include "bandpass_filter.h"
 
-double complex *
-bandpass_filter (double *data, double sampleRate, uint64_t totalSamples)
+void
+bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, int nfft,
+                 double complex *filterResult, double complex *freqResponse)
 {
   // options
   liquid_iirdes_filtertype ftype = LIQUID_IIRDES_BUTTER;
@@ -25,24 +26,21 @@ bandpass_filter (double *data, double sampleRate, uint64_t totalSamples)
       ftype, btype, format, order, fc, f0, Ap, As);
   iirfilt_crcf_print (q);
 
-  // allocate memory for data arrays
-  double complex *x = (double complex *)malloc (sizeof (double complex) * n);
-  double complex *y = (double complex *)malloc (sizeof (double complex) * n);
-
-  // generate input signal (noise sine wave with decaying amplitude)
   uint64_t i;
   for (i = 0; i < n; i++)
   {
-    x[i] = data[i];
-
     // run filter
-    iirfilt_crcf_execute (q, x[i], &y[i]);
+    iirfilt_crcf_execute (q, data[i], &filterResult[i]);
   }
+
+  // compute frequency response
+    int counter;
+    for(counter = 0; counter < nfft; counter++)
+    {
+        double freq = 0.5f * (double)counter / (double)nfft;
+        iirfilt_crcf_freqresponse(q, freq, &freqResponse[counter]);
+    }
 
   // destroy filter object
   iirfilt_crcf_destroy (q);
-
-  free (x);
-
-  return y;
 }
