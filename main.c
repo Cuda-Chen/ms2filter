@@ -20,9 +20,11 @@ main (int argc, char **argv)
   double *data    = NULL;
   double sampleRate;
   uint64_t totalSamples;
-  double complex *filterResult;
-  double complex *freqResponse;
-  int nfft = 512;
+  //double complex *filterResult;
+  //double complex *freqResponse;
+  float complex *filterResult;
+  float complex *freqResponse;
+  int nfft = 2000;
   double lowcut, highcut; /* low and high cutoff frequencies */
   const char *outputFile = "filter_result.m";
   int rv;
@@ -48,10 +50,14 @@ main (int argc, char **argv)
   }
 
   /* filter the data with band pass filter */
-  filterResult = (double complex *)malloc (sizeof (double complex) * totalSamples);
-  freqResponse = (double complex *)malloc (sizeof (double complex) * nfft);
-  bandpass_filter (data, sampleRate, totalSamples, nfft,
-                   filterResult, freqResponse);
+  //filterResult = (double complex *)malloc (sizeof (double complex) * totalSamples);
+  //freqResponse = (double complex *)malloc (sizeof (double complex) * nfft);
+  filterResult = (float complex *)malloc (sizeof (float complex) * totalSamples);
+  freqResponse = (float complex *)malloc (sizeof (float complex) * nfft);
+  /*bandpass_filter (data, sampleRate, totalSamples, nfft,
+                   filterResult, freqResponse);*/
+  bandpass_filter_float (data, sampleRate, totalSamples, nfft,
+                         filterResult, freqResponse);
   if (filterResult == NULL || freqResponse == NULL)
   {
     printf ("Something wrong when applying band pass filter\n");
@@ -59,8 +65,10 @@ main (int argc, char **argv)
   }
 
   /* Save the filtered result to MATLAB script */
-  save2Script (outputFile, data, filterResult, totalSamples,
-               freqResponse, nfft);
+  /*save2Script (outputFile, data, filterResult, totalSamples,
+               freqResponse, nfft);*/
+  save2Script_float (outputFile, data, filterResult, totalSamples,
+                     freqResponse, nfft);
 
   // free alllocated objects
   free (data);
