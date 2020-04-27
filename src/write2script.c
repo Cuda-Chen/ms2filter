@@ -136,12 +136,13 @@ save2Script_float (const char *outputfile, double *data, float complex *filterRe
   fprintf (fptr, "  plot(f,20*log10(abs(H)),'Color',[0 0.25 0.5],'LineWidth',2);\n");
   //fprintf (fptr, "  plot(f, abs(H), 'Color', [0 0.25 0.5], 'LineWidth', 2);\n");
   //fprintf (fptr, "  axis([0 0.5 -3 0]);\n");
-  //fprintf (fptr, "  axis([0 0.5 -100 0]);\n");
+  fprintf (fptr, "  axis([0 0.2 -3 0]);\n");
   fprintf (fptr, "  grid on;\n");
   fprintf (fptr, "  ylabel('Pass band [dB]');\n");
   fprintf (fptr, "subplot(3,1,2);\n");
   fprintf (fptr, "  plot(f,20*log10(abs(H)),'Color',[0 0.25 0.5],'LineWidth',2);\n");
-  fprintf (fptr, "  axis([0 0.5 -100 0]);\n");
+  //fprintf (fptr, "  axis([0 0.5 -100 0]);\n");
+  fprintf (fptr, "  axis([0 0.2 -100 0]);\n");
   fprintf (fptr, "  grid on;\n");
   fprintf (fptr, "  ylabel('Stop band [dB]');\n");
   fprintf (fptr, "subplot(3,1,3);\n");

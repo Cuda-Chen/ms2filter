@@ -54,7 +54,7 @@ bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, i
   liquid_iirdes_bandtype btype   = LIQUID_IIRDES_BANDPASS;
   liquid_iirdes_format format    = LIQUID_IIRDES_TF;
   unsigned int order             = 2;            // filter order
-  float fc                       = 0.01f;        // cutoff frequency
+  float fc                       = 0.05f;        // cutoff frequency
   float f0                       = 0.1f;         // center frequency
   float Ap                       = 1.0f;         // pass-band ripple
   float As                       = 40.0f;        // stop-band attenuation
