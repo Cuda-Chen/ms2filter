@@ -25,7 +25,7 @@ main (int argc, char **argv)
   float complex *filterResult;
   float complex *freqResponse;
   int nfft = 2000;
-  double lowcut, highcut; /* low and high cutoff frequencies */
+  float lowcut, highcut; /* low and high cutoff frequencies */
   const char *outputFile = "filter_result.m";
   int rv;
 
@@ -35,7 +35,10 @@ main (int argc, char **argv)
     usage ();
     return 1;
   }
+  lowcut    = atof (argv[1]);
+  highcut   = atof (argv[2]);
   mseedfile = argv[3];
+  /*output = argv[4];*/
 
   /* Get data from input miniSEED file */
   rv = parse_miniSEED (mseedfile, &data, &sampleRate, &totalSamples);
@@ -57,6 +60,7 @@ main (int argc, char **argv)
   /*bandpass_filter (data, sampleRate, totalSamples, nfft,
                    filterResult, freqResponse);*/
   bandpass_filter_float (data, sampleRate, totalSamples, nfft,
+                         lowcut, highcut,
                          filterResult, freqResponse);
   if (filterResult == NULL || freqResponse == NULL)
   {

@@ -47,18 +47,19 @@ bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, int nff
 
 void
 bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, int nfft,
+                       float lowcutFreq, float highcutFreq,
                        float complex *filterResult, float complex *freqResponse)
 {
   // options
   liquid_iirdes_filtertype ftype = LIQUID_IIRDES_BUTTER;
   liquid_iirdes_bandtype btype   = LIQUID_IIRDES_BANDPASS;
   liquid_iirdes_format format    = LIQUID_IIRDES_TF;
-  unsigned int order             = 2;            // filter order
-  float fc                       = 0.05f;        // cutoff frequency
-  float f0                       = 0.1f;         // center frequency
-  float Ap                       = 1.0f;         // pass-band ripple
-  float As                       = 40.0f;        // stop-band attenuation
-  uint64_t n                     = totalSamples; // number of samples
+  unsigned int order             = 2;                                            // filter order
+  float fc                       = lowcutFreq / sampleRate;                      // cutoff frequency
+  float f0                       = sqrt (lowcutFreq * highcutFreq) / sampleRate; // center frequency
+  float Ap                       = 1.0f;                                         // pass-band ripple
+  float As                       = 40.0f;                                        // stop-band attenuation
+  uint64_t n                     = totalSamples;                                 // number of samples
 
   // design filter from prototype
   iirfilt_crcf q = iirfilt_crcf_create_prototype (
