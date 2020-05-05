@@ -5,7 +5,7 @@
 #include "liquid.h"
 
 #include "bandpass_filter.h"
-
+#if 0
 void
 bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, int nfft,
                  double complex *filterResult, double complex *freqResponse)
@@ -44,7 +44,7 @@ bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, int nff
   // destroy filter object
   iirfilt_crcf_destroy (q);
 }
-
+#endif
 void
 bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, int nfft,
                        float lowcutFreq, float highcutFreq,

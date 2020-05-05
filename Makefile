@@ -7,7 +7,7 @@ CFLAGS =  -Wall
 LDFLAGS = -L./libmseed -Wl,-rpath,./libmseed
 LDLIBS = -Wl,-Bstatic -lmseed -Wl,-Bdynamic -lm -lliquid
 
-OBJS = main.o src/parse_miniSEED.o src/bandpass_filter.o src/write2script.o
+OBJS = main.o src/parse_miniSEED.o src/bandpass_filter.o src/write2script.o src/write2file.o
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -O0 -g -DDEBUG=1

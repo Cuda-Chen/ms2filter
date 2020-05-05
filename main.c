@@ -26,7 +26,8 @@ main (int argc, char **argv)
   float complex *freqResponse;
   int nfft = 2000;
   float lowcut, highcut; /* low and high cutoff frequencies */
-  const char *outputFile = "filter_result.m";
+  char *outputFile;
+  const char *outputScript = "filter_result.m";
   int rv;
 
   /* Simple argement parsing */
@@ -35,10 +36,10 @@ main (int argc, char **argv)
     usage ();
     return 1;
   }
-  lowcut    = atof (argv[1]);
-  highcut   = atof (argv[2]);
-  mseedfile = argv[3];
-  /*output = argv[4];*/
+  lowcut     = atof (argv[1]);
+  highcut    = atof (argv[2]);
+  mseedfile  = argv[3];
+  outputFile = argv[4];
 
   /* Get data from input miniSEED file */
   rv = parse_miniSEED (mseedfile, &data, &sampleRate, &totalSamples);
@@ -68,11 +69,10 @@ main (int argc, char **argv)
     return -1;
   }
 
-  /* Save the filtered result to MATLAB script */
-  /*save2Script (outputFile, data, filterResult, totalSamples,
-               freqResponse, nfft);*/
-  save2Script_float (outputFile, data, filterResult, totalSamples,
+  /* Save the filtered result to MATLAB script and text file */
+  save2Script_float (outputScript, data, filterResult, totalSamples,
                      freqResponse, nfft);
+  save2file (outputFile, filterResult, totalSamples);
 
   // free alllocated objects
   free (data);

@@ -4,5 +4,6 @@
 #include "bandpass_filter.h"
 #include "parse_miniSEED.h"
 #include "write2script.h"
+#include "write2file.h"
 
 #endif
