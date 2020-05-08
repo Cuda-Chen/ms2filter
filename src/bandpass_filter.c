@@ -1,5 +1,6 @@
 #include <complex.h>
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "liquid.h"
@@ -53,13 +54,16 @@ bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, i
   // options
   liquid_iirdes_filtertype ftype = LIQUID_IIRDES_BUTTER;
   liquid_iirdes_bandtype btype   = LIQUID_IIRDES_BANDPASS;
-  liquid_iirdes_format format    = LIQUID_IIRDES_TF;
-  unsigned int order             = 2;                                            // filter order
+  liquid_iirdes_format format    = LIQUID_IIRDES_SOS;
+  unsigned int order             = 4;                                            // filter order
   float fc                       = lowcutFreq / sampleRate;                      // cutoff frequency
   float f0                       = sqrt (lowcutFreq * highcutFreq) / sampleRate; // center frequency
-  float Ap                       = 1.0f;                                         // pass-band ripple
-  float As                       = 40.0f;                                        // stop-band attenuation
-  uint64_t n                     = totalSamples;                                 // number of samples
+  //float f0 = (lowcutFreq + highcutFreq) / 2 / sampleRate;
+  float Ap   = 1.0f;         // pass-band ripple
+  float As   = 40.0f;        // stop-band attenuation
+  uint64_t n = totalSamples; // number of samples
+
+  printf ("lowcut: %f highcut: %f : center: %f\n", fc, highcutFreq, f0);
 
   // design filter from prototype
   iirfilt_crcf q = iirfilt_crcf_create_prototype (
