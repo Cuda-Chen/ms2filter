@@ -8,9 +8,14 @@ static void
 usage ()
 {
   printf ("Usage: ./ms2filter <c1> <c2> <input> <output>");
+  printf ("\n\nInput parameters:\n");
+  printf ("c1: low cut frequency (Hz)\n");
+  printf ("c2: high cut frequency (Hz)\n");
+  printf ("input: a miniSEED seismic record\n");
+  printf ("output: a text file containing filtered result (read and imaginary part)\n");
   printf ("\nOutput format: \n");
-  printf ("a MATLAB script to plot the input and filter result\n");
-  printf ("NOTE: current <c1>, <c2>, and <output> has no effect. Type anything you like instead.\n");
+  printf ("1. A MATLAB script to plot the input and filter result.\n");
+  printf ("2. A text file containing filtered result (real and imaginary part).\n");
 }
 
 int
