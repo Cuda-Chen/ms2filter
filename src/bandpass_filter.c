@@ -70,12 +70,18 @@ bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, i
       ftype, btype, format, order, fc, f0, Ap, As);
   iirfilt_crcf_print (q);
 
-  uint64_t i;
-  for (i = 0; i < n; i++)
+  //uint64_t i; // setting this result in segfault when backward filtering
+  int i;
+  for (i = 0; i < n; i++) // forward filtering
   {
-    // run filter
     iirfilt_crcf_execute (q, data[i], &filterResult[i]);
   }
+#if 0
+  for (i = n - 1; i >= 0; i--) // backward filtering
+  {
+    iirfilt_crcf_execute (q, data[i], &filterResult[i]);
+  }
+#endif
 
   // compute frequency response
   int counter;
