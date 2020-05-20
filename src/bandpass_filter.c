@@ -48,14 +48,14 @@ bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, int nff
 #endif
 void
 bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, int nfft,
-                       float lowcutFreq, float highcutFreq,
+                       float lowcutFreq, float highcutFreq, int _order,
                        float complex *filterResult, float complex *freqResponse)
 {
   // options
   liquid_iirdes_filtertype ftype = LIQUID_IIRDES_BUTTER;
   liquid_iirdes_bandtype btype   = LIQUID_IIRDES_BANDPASS;
   liquid_iirdes_format format    = LIQUID_IIRDES_SOS;
-  unsigned int order             = 4;                                            // filter order
+  unsigned int order             = _order;                                       // filter order
   float fc                       = lowcutFreq / sampleRate;                      // cutoff frequency
   float f0                       = sqrt (lowcutFreq * highcutFreq) / sampleRate; // center frequency
   //float f0 = (lowcutFreq + highcutFreq) / 2 / sampleRate;

@@ -80,10 +80,10 @@ save2Script (const char *outputfile, double *data, double complex *filterResult,
 }
 
 void
-save2Script_float (const char *outputfile, double *data, float complex *filterResult, uint64_t totalSamples,
+save2Script_float (const char *outputfile, double *data, int _order, float complex *filterResult, uint64_t totalSamples,
                    float complex *freqResponse, int nfft)
 {
-  int order = 2;
+  int order = _order;
 
   FILE *fptr = fopen (outputfile, "w");
   fprintf (fptr, "%% %s: auto-generated file. DO NOT EDIT.\n", outputfile);
