@@ -59,11 +59,12 @@ bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, i
   float fc                       = lowcutFreq / sampleRate;                      // cutoff frequency
   float f0                       = sqrt (lowcutFreq * highcutFreq) / sampleRate; // center frequency
   //float f0 = (lowcutFreq + highcutFreq) / 2 / sampleRate;
-  float Ap   = 1.0f;         // pass-band ripple
-  float As   = 40.0f;        // stop-band attenuation
-  uint64_t n = totalSamples; // number of samples
+  float Ap                  = 1.0f;         // pass-band ripple
+  float As                  = 40.0f;        // stop-band attenuation
+  uint64_t n                = totalSamples; // number of samples
+  float complex *filterTemp = (float complex *)malloc (sizeof (float complex) * n);
 
-  printf ("lowcut: %f highcut: %f : center: %f\n", fc, highcutFreq, f0);
+  printf ("lowcut: %f highcut: %f : center: %f\n", fc, highcutFreq / sampleRate, f0);
 
   // design filter from prototype
   iirfilt_crcf q = iirfilt_crcf_create_prototype (
@@ -74,14 +75,15 @@ bandpass_filter_float (double *data, double sampleRate, uint64_t totalSamples, i
   int i;
   for (i = 0; i < n; i++) // forward filtering
   {
-    iirfilt_crcf_execute (q, data[i], &filterResult[i]);
+    iirfilt_crcf_execute (q, data[i], &filterTemp[i]);
   }
-#if 0
+  iirfilt_crcf_reset (q);
+  //#if 0
   for (i = n - 1; i >= 0; i--) // backward filtering
   {
-    iirfilt_crcf_execute (q, data[i], &filterResult[i]);
+    iirfilt_crcf_execute (q, filterTemp[i], &filterResult[i]);
   }
-#endif
+  //#endif
 
   // compute frequency response
   int counter;
