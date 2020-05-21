@@ -5,9 +5,10 @@
 #include "libmseed.h"
 
 #include "parse_miniSEED.h"
+#include "datatype.h"
 
 int
-parse_miniSEED (const char *mseedfile, double **data, double *sampleRate, uint64_t *dataLength)
+parse_miniSEED (const char *mseedfile, data_t **data, double *sampleRate, uint64_t *dataLength)
 {
   MS3TraceList *mstl = NULL;
   MS3TraceID *tid    = NULL;
@@ -49,7 +50,7 @@ parse_miniSEED (const char *mseedfile, double **data, double *sampleRate, uint64
     /* Get the data of this trace */
     seg            = tid->first;
     uint64_t index = 0;
-    (*data)        = (double *)malloc (sizeof (double) * totalSamples);
+    (*data)        = (data_t *)malloc (sizeof (data_t) * totalSamples);
     if (*data == NULL)
     {
       ms_log (2, "something wrong when mallocing data array\n");
@@ -94,15 +95,15 @@ parse_miniSEED (const char *mseedfile, double **data, double *sampleRate, uint64
               sptr = (char *)seg->datasamples + (i * samplesize);
               if (sampletype == 'i')
               {
-                (*data)[index] = (double)(*(int32_t *)sptr);
+                (*data)[index] = (data_t)(*(int32_t *)sptr);
               }
               else if (sampletype == 'f')
               {
-                (*data)[index] = (double)(*(float *)sptr);
+                (*data)[index] = (data_t)(*(float *)sptr);
               }
               else if (sampletype == 'd')
               {
-                (*data)[index] = (double)(*(double *)sptr);
+                (*data)[index] = (data_t)(*(double *)sptr);
               }
 
               index++;

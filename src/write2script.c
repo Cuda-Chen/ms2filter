@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "write2script.h"
+#include "datatype.h"
 
 void
 save2Script (const char *outputfile, double *data, double complex *filterResult, uint64_t totalSamples,
@@ -80,7 +81,7 @@ save2Script (const char *outputfile, double *data, double complex *filterResult,
 }
 
 void
-save2Script_float (const char *outputfile, double *data, int _order, float complex *filterResult, uint64_t totalSamples,
+save2Script_float (const char *outputfile, data_t *data, int _order, float complex *filterResult, uint64_t totalSamples,
                    float complex *freqResponse, int nfft)
 {
   int order = _order;

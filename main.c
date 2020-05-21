@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "common.h"
+#include "datatype.h"
 
 static void
 usage ()
@@ -23,7 +24,7 @@ int
 main (int argc, char **argv)
 {
   char *mseedfile = NULL;
-  double *data    = NULL;
+  data_t *data    = NULL;
   double sampleRate;
   uint64_t totalSamples;
   //double complex *filterResult;

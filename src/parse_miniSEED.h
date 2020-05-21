@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
-int parse_miniSEED (const char *mseedfile, double **data, double *sampleRate, uint64_t *totalSamples);
+#include "datatype.h"
+
+int parse_miniSEED (const char *mseedfile, data_t **data, double *sampleRate, uint64_t *totalSamples);
 
 #endif
