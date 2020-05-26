@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "write2script.h"
 #include "datatype.h"
+#include "write2script.h"
 
 void
 save2Script (const char *outputfile, double *data, double complex *filterResult, uint64_t totalSamples,

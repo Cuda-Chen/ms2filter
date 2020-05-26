@@ -10,7 +10,7 @@ void bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, in
                       double complex *filterResult, double complex *freqResponse);
 #endif
 void bandpass_filter_float (data_t *data, double sampleRate, uint64_t totalSamples, int nfft,
-                            float lowcutFreq, float highcutFreq, int _order,
+                            float lowcutFreq, float highcutFreq, int _order, int passes,
                             float complex *filterResult, float complex *freqResponse);
 
 #endif

@@ -8,11 +8,12 @@
 static void
 usage ()
 {
-  printf ("Usage: ./ms2filter <c1> <c2> <order> <input> <output>");
+  printf ("Usage: ./ms2filter <c1> <c2> <order> <passes> <input> <output>");
   printf ("\n\nInput parameters:\n");
   printf ("c1: low cut frequency (Hz)\n");
   printf ("c2: high cut frequency (Hz)\n");
   printf ("order: filter order\n");
+  printf ("passes: set '1' for forward filtering or set'2' for forward-backward filtering\n");
   printf ("input: a miniSEED seismic record\n");
   printf ("output: a text file containing filtered result (real and imaginary part)\n");
   printf ("\nOutput format: \n");
@@ -34,12 +35,13 @@ main (int argc, char **argv)
   int nfft = 2000;
   float lowcut, highcut; /* low and high cutoff frequencies */
   int order;
+  int passes;
   char *outputFile;
   const char *outputScript = "filter_result.m";
   int rv;
 
   /* Simple argement parsing */
-  if (argc != 6)
+  if (argc != 7)
   {
     usage ();
     return 1;
@@ -47,8 +49,9 @@ main (int argc, char **argv)
   lowcut     = atof (argv[1]);
   highcut    = atof (argv[2]);
   order      = atoi (argv[3]);
-  mseedfile  = argv[4];
-  outputFile = argv[5];
+  passes     = atoi (argv[4]);
+  mseedfile  = argv[5];
+  outputFile = argv[6];
 
   /* Get data from input miniSEED file */
   rv = parse_miniSEED (mseedfile, &data, &sampleRate, &totalSamples);
@@ -66,7 +69,7 @@ main (int argc, char **argv)
   filterResult = (float complex *)malloc (sizeof (float complex) * totalSamples);
   freqResponse = (float complex *)malloc (sizeof (float complex) * nfft);
   bandpass_filter_float (data, sampleRate, totalSamples, nfft,
-                         lowcut, highcut, order,
+                         lowcut, highcut, order, passes,
                          filterResult, freqResponse);
   if (filterResult == NULL || freqResponse == NULL)
   {

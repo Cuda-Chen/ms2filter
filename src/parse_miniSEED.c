@@ -4,8 +4,8 @@
 
 #include "libmseed.h"
 
-#include "parse_miniSEED.h"
 #include "datatype.h"
+#include "parse_miniSEED.h"
 
 int
 parse_miniSEED (const char *mseedfile, data_t **data, double *sampleRate, uint64_t *dataLength)
@@ -95,15 +95,15 @@ parse_miniSEED (const char *mseedfile, data_t **data, double *sampleRate, uint64
               sptr = (char *)seg->datasamples + (i * samplesize);
               if (sampletype == 'i')
               {
-                (*data)[index] = (data_t)(*(int32_t *)sptr);
+                (*data)[index] = (data_t) (*(int32_t *)sptr);
               }
               else if (sampletype == 'f')
               {
-                (*data)[index] = (data_t)(*(float *)sptr);
+                (*data)[index] = (data_t) (*(float *)sptr);
               }
               else if (sampletype == 'd')
               {
-                (*data)[index] = (data_t)(*(double *)sptr);
+                (*data)[index] = (data_t) (*(double *)sptr);
               }
 
               index++;

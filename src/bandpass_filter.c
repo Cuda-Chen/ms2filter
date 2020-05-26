@@ -49,14 +49,15 @@ bandpass_filter (double *data, double sampleRate, uint64_t totalSamples, int nff
 #endif
 void
 bandpass_filter_float (data_t *data, double sampleRate, uint64_t totalSamples, int nfft,
-                       float lowcutFreq, float highcutFreq, int _order,
+                       float lowcutFreq, float highcutFreq, int _order, int passes,
                        float complex *filterResult, float complex *freqResponse)
 {
   // options
   liquid_iirdes_filtertype ftype = LIQUID_IIRDES_BUTTER;
   liquid_iirdes_bandtype btype   = LIQUID_IIRDES_BANDPASS;
   liquid_iirdes_format format    = LIQUID_IIRDES_SOS;
-  unsigned int order             = _order;                                       // filter order
+  unsigned int order             = _order; // filter order
+  int passesFlag                 = (passes == 2) ? 1 : 0;
   float fc                       = lowcutFreq / sampleRate;                      // cutoff frequency
   float f0                       = sqrt (lowcutFreq * highcutFreq) / sampleRate; // center frequency
   //float f0 = (lowcutFreq + highcutFreq) / 2 / sampleRate;
@@ -78,13 +79,22 @@ bandpass_filter_float (data_t *data, double sampleRate, uint64_t totalSamples, i
   {
     iirfilt_crcf_execute (q, data[i], &filterTemp[i]);
   }
-  iirfilt_crcf_reset (q);
-  //#if 0
-  for (i = n - 1; i >= 0; i--) // backward filtering
+  if (passesFlag)
   {
-    iirfilt_crcf_execute (q, filterTemp[i], &filterResult[i]);
+    iirfilt_crcf_reset (q);
+
+    for (i = n - 1; i >= 0; i--) // backward filtering
+    {
+      iirfilt_crcf_execute (q, filterTemp[i], &filterResult[i]);
+    }
   }
-  //#endif
+  else
+  {
+    for (i = 0; i < n; i++)
+    {
+      filterResult[i] = filterTemp[i];
+    }
+  }
 
   // compute frequency response
   int counter;
