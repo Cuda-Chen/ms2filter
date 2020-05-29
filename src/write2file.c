@@ -12,7 +12,7 @@ save2file (const char *outputFile, float complex *filterResult, uint64_t totalSa
   uint64_t i;
   for (i = 0; i < totalSamples; i++)
   {
-    fprintf (fptr, "%lf %lf\n", crealf (filterResult[i]), cimagf (filterResult[i]));
+    fprintf (fptr, "%e %e\n", crealf (filterResult[i]), cimagf (filterResult[i]));
   }
 
   fclose (fptr);
