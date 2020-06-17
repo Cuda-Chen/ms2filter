@@ -13,12 +13,13 @@ usage ()
   printf ("c1: low cut frequency (Hz)\n");
   printf ("c2: high cut frequency (Hz)\n");
   printf ("order: filter order\n");
-  printf ("passes: set '1' for forward filtering or set'2' for forward-backward filtering\n");
+  printf ("passes: set '1' for forward filtering or set '2' for forward-backward filtering\n");
   printf ("input: a miniSEED seismic record\n");
   printf ("output: a text file containing filtered result (real and imaginary part)\n");
-  printf ("\nOutput format: \n");
+  printf ("\nOutput files and their format: \n");
   printf ("1. A MATLAB script to plot the input and filter result.\n");
   printf ("2. A text file containing filtered result (real and imaginary part).\n");
+  printf ("3. A miniSEED file which contains filtered result (real part only).\n");
 }
 
 int
@@ -80,7 +81,8 @@ main (int argc, char **argv)
   /* Save the filtered result to MATLAB script and text file */
   save2Script_float (outputScript, data, order, filterResult, totalSamples,
                      freqResponse, nfft);
-  save2file (outputFile, filterResult, totalSamples);
+  save2file ("output.txt", filterResult, totalSamples);
+  save2mseed (mseedfile, outputFile, filterResult);
 
   // free alllocated objects
   free (data);
