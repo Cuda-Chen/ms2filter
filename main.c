@@ -8,7 +8,7 @@
 static void
 usage ()
 {
-  printf ("Usage: ./ms2filter <c1> <c2> <order> <passes> <input> <output>");
+  printf ("Usage: ./ms2filter [c1] [c2] [order] [passes] [input] [output]");
   printf ("\n\nInput parameters:\n");
   printf ("c1: low cut frequency (Hz)\n");
   printf ("c2: high cut frequency (Hz)\n");
