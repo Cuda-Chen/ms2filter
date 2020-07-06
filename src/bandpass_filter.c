@@ -66,12 +66,16 @@ bandpass_filter_float (data_t *data, double sampleRate, uint64_t totalSamples, i
   uint64_t n                = totalSamples; // number of samples
   float complex *filterTemp = (float complex *)malloc (sizeof (float complex) * n);
 
+#ifdef DEBUG
   printf ("lowcut: %f highcut: %f : center: %f\n", fc, highcutFreq / sampleRate, f0);
+#endif
 
   // design filter from prototype
   iirfilt_crcf q = iirfilt_crcf_create_prototype (
       ftype, btype, format, order, fc, f0, Ap, As);
+#ifdef DEBUG
   iirfilt_crcf_print (q);
+#endif
 
   //uint64_t i; // setting this result in segfault when backward filtering
   int i;
